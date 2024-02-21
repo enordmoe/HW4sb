@@ -1,0 +1,202 @@
+---
+title: "Math 265: Homework 4"
+subtitle: "Data Import, Tidy Data and Strings"
+author: "Be Sure to Put Your Name Here"  
+date: "February 28, 2024"
+format: 
+    html: 
+      toc: true
+      number-depth: 3
+      theme: yeti
+editor: visual
+---
+
+```{r}
+#| label: setup
+#| include: false
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(NHANES)
+```
+
+# Introduction
+
+Use this document as a template for writing up your assignment. As in previous assignments, make several commits to your GitHub repository and "submit" by committing and pushing your last commits to the repository from which I will access your work.
+
+# Question 1: Super Bowl Data \[8 points\]
+
+Now it's been a couple weeks since the American football game called Super Bowl LVIII football game and, for those that watched it, your Super Bowl snacks should have digested. It's now time to digest, clean and plot some Super Bowl data.This question looks at a data set about the Super Bowl data set at **data.world**. It should not be necessary to be familiar with American football to carry out the procedures requested here but feel free to ask if you have any questions. In any case, here's a [link to an overview of the data set](https://data.world/sports/history-of-the-super-bowl). You should **not** need to register to view the description or access the data (even though it may appear *data.world* wants you to do so). The raw data, a comma-separated data file (CSV), can be accessed from this link "https://query.data.world/s/zg4dna5wbbnonds7ewdv7pznh7ou7p". This is the link you should use to read in the data in your analysis.[^1]
+
+[^1]: Sorry, this dataset ends with Super Bowl LII.
+
+a.  The **tidyverse** packages have been loaded in the chunk above so you can go ahead and read in the data. Write a code chunk below that uses `read_csv()` to read in the data from the URL provided. Read it into a data frame called **super_bowl**. Since you are using `read_csv()`, this data frame will be a tibble.
+
+**Answer:**
+
+```{r}
+mydata <- read_csv("https://query.data.world/s/zg4dna5wbbnonds7ewdv7pznh7ou7p")
+```
+
+b.  You should have seen some red print in the output confirming the column specifications the package **readr** used to import the data. Follow directions and use the `spec(...)` command to see the full column specifications used to read the data. This output is somewhat lengthy but it clearly shows the formats used as well as indicating which names are "non-syntactic."
+
+**Answer:**
+
+```{r}
+
+```
+
+c.  Look at the output of the `spec(...)` command and identify two things. (1) Which variables are automatically imported as numeric? (2) Name the first 3 non-syntactic names.
+
+**Answer:**
+
+d.  Let's first fix up the non-syntactic names. A handy package for this purpose is **janitor** which contains a function called `clean_names()`. Write a chunk below that loads the **janitor** library and uses the function to convert all the non-syntactic names to "snake_case" format (underscores instead of blanks and all variable names start with lower case). Use the `clean_names()` function to save the tibble with the cleaned up names back under the names **super_bowl**. Check that none of the names in your data set still have the tick marks used for non-syntactic names. Note also that all variables now start with lower case letters.
+
+**Answer:**
+
+```{r}
+
+```
+
+e.  Now consider the first column of the data frame. It should be clear to you that this is a *date* but, by default, **readr** imports it as a character string. Use `mutate()` and an appropriate function to cast the variable as a variable of type "date-time". Resave the revised data under the name **super_bowl**. **Hint**: You'll need to provide a format specification for the date. Take a look at `parse_date` and `parse_date_time`. Finally, why is `parse_date_time2` the right tool for this dataset.
+
+**Answer:**
+
+```{r}
+
+```
+
+f.  The next column contains the variable *sb* indicating a sequence number in Roman numerals representing the Super Bowl in marketing and promotion. Use appropriate functions with `mutate()` to convert this variable to a numeric variable *sb* ranging from 1 to 53. This might be a good chance to learn about the functions `as.roman()` and `as.numeric()`.
+
+**Answer:**
+
+```{r}
+
+```
+
+g.  Now take a break for a picture. Use **ggplot2** to create a line plot showing *attendance* (y) against the superbowl number (*sb*) on the (x) axis. On top of this lineplot, superimpose a point plot (geom_point()) that colors the points by whether or not (just two colors) the game took place in the "Rose Bowl" `stadium`. What do you notice? Which game now sticks out as out of place? In what stadium was it played? To finish the story, find out in what year the stadium opened.
+
+**Answer:**
+
+```{r}
+
+```
+
+h.  Now inspect the *qb_winner* variable. You will notice that in some years, there is more than one name listed as the *qb_winner*, the quarterback for the winning team. In this form, the variable is difficult to use. Instead, use the `separate_wider_delim()` command to split this column into two new variables, *qbw_starter* and *qbw_backup* corresponding to the starting quarterback for the winning team and the backup quarterback for the winning team (listed second when more than one winning quarterback is listed). When using the `separate_wider_delim()` command, be sure to specify the separator symbol correctly for these data and use one of the options to fill in missing values where needed and avoid unnecessary warning messages. Save the data with the new variables in **super_bowl**.
+
+**Answer:**
+
+```{r}
+
+```
+
+i.  Create a bar chart of the winning starting quarterbacks (*qbw_starter*) of super bowls for all quarterbacks who have won at least 2 super bowls. Color the bars so that each quarterback is a different color (one bar per quarterback). If you like, use the `reorder()` command so that the bars are ordered from highest to lowest but this is not required. Which quarterbacks in this dataset have won at least 3 super bowls? Note: The vertical scale should show the number of times each was the winning quarterback.
+
+**Answer:**
+
+```{r}
+
+```
+
+# Question 2: British Baking Data Set \[6 points\]
+
+The *Great British Bake Off* is a very popular long-running British baking competition TV program that has now been running for 9 seasons, airing first in the UK and later gaining popularity in the US. Viewership ratings data and other information about the program are provided in the data set "gbbo_ratings.csv" found in the `data` subdirectory of your workspace.
+
+a.  Use data tidying commands to tidy the data into a form that will allow you to construct a plot of 7-day viewership numbers (variables that end with "7day") against the episode number. Note that the variable name `e1_viewers_7day` provides information on the 7day viewership (millions who watched within 7 days of airing) of the 1st episode of the season. Use parsing commands rather than brute force wherever possible. Your plot should have the following characteristics:
+
+-   Line plot with episode number on the x axis and number of viewers on the y axis;
+-   Maps values of the variable *channel* to the color aesthetic;
+-   Has informative labels.
+
+**Answer:**
+
+```{r}
+
+```
+
+b.  In the 8th season, the program was moved to the BBC network to a different network. What evidence, if any, do you find in your plot that this move affected the ratings?
+
+**Answer:**
+
+c.  Just before the final episode of the 8th season, the new co-host of the show inadvertently revealed the winner in an ill-timed Twitter post. What evidence, if any, do you find in your plot that this mis-step affected ratings for the finale?
+
+**Answer:**
+
+# 3. A Fruit Fight \[6 points\]
+
+The character vector called `fruit` in **stringr** contains a list of 80 (!) fruit from around the world. Use regular expressions in `str_subset()` to find the fruit that satisfy the following conditions. You might wish to use `str_view()` while experimenting but then use `str_subset()` to show your results. This will prevent printing the entire list of 80 each time! If you get stuck, you can certainly google and use stack overflow for help. This exercise is intended to push you to learn a little regexp so you can get a feel for what it can do.
+
+a.  Find all fruit that have names that begin with the letter `d`.
+
+**Answer:**
+
+```{r}
+str_subset(fruit, "^d")
+
+```
+
+b\. Find all fruit that have names that contain `r`, `n` or `q`.
+
+**Answer:**
+
+```{r}
+str_subset(fruit, "[rnq]")
+
+```
+
+c\. Find all fruit that have names that contain `ia` or `io`.
+
+**Answer:**
+
+```{r}
+str_subset(fruit, "(ia|io)")
+# str_subset(fruit, "i[ao]")
+
+```
+
+d\. Find all fruit that have names that end with `n` but not `in`.
+
+**Answer:**
+
+```{r}
+# Try one of these
+str_subset(fruit, "[^i]n$")
+str_subset(fruit, "(?<!i)n$") # uses look around, not preceded by
+
+```
+
+e\. Find all fruit that have names that contain `ur` first and `an` later in the name.
+
+**Answer:**
+
+```{r}
+str_subset(fruit, "(ur).*(an)")
+
+```
+
+f\. Find all fruit that have names that are exactly 6 letters long.
+
+**Answer:**
+
+```{r}
+str_subset(fruit, "^.{6}$")
+# OR 
+# str_subset(fruit, "^\\b\\w{6}\\b$")
+# str_subset(fruit, "^[a-z]{6}$")
+# str_subset(fruit, "^......$")
+
+```
+
+g\. Find all fruit that have names that start and end with the same letter? (Hint: Test your regexp specification on "abracadabra" and "leviosa" to make sure the regexp magic is really working but only when it's supposed to. Or you could test it on the character vector corpus of `words` included in **stringr**).
+
+**Answer:**
+
+```{r}
+str_view(c("abracadabra", "leviosa"), "^(.).*\\1$") 
+str_subset(fruit, "^(.).*\\1$") 
+```
+
+h\. What is my favorite fruit? Questions a-f are intended to give you a strong hint!
+
+**Answer:**
+
+Durian! ![durian](https://www.thespruceeats.com/thmb/pmbCPzMXt8ck0KqYUQFH9cWT-NU=/2121x1193/smart/filters:no_upscale()/DurianFruit-GettyImages-530978744-590015173df78ca15925a527.jpg){width="640"}
